@@ -40,6 +40,7 @@ defmodule DiscussWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard", metrics: DiscussWeb.Telemetry
+      get "/topics/new", TopicController, :new
     end
   end
 

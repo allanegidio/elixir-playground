@@ -1,0 +1,14 @@
+# TODO-> Put in dockercompose
+# Run docker with postgress: 
+docker run -p 5432:5432  --name postgres -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=discuss_dev -d postgres
+
+# Create database postgress setup
+mix ecto.create
+
+# Run migration using ecto
+mix ecto.migrate
+
+# Start server
+mix phx.server
+
+
