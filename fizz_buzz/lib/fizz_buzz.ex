@@ -16,8 +16,9 @@ defmodule FizzBuzz do
   end
 
   def convert_and_evaluate_numbers(number) do
-    number = String.to_integer(number)
-    evaluate_number(number)
+    number
+      |> String.to_integer()
+      |> evaluate_number()
   end
 
   def evaluate_number(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: :fizzbuzz
