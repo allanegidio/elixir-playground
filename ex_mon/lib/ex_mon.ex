@@ -13,7 +13,8 @@ defmodule ExMon do
     |> ExMon.create_player(:punch, :thunderbolt, :heal)
     |> Game.start(player)
 
-    Status.print_round_message()
+    Game.info()
+    |> Status.print_round_message()
   end
 
   def make_move(movement) do
@@ -31,5 +32,8 @@ defmodule ExMon do
       :move_heal -> Actions.heal()
       movement -> Actions.attack(movement)
     end
+
+    Game.info()
+    |> Status.print_round_message()
   end
 end
