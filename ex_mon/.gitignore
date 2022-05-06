@@ -24,3 +24,6 @@ ex_mon-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+#ignore vscode files
+.vscode
