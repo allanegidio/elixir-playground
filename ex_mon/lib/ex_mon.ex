@@ -3,6 +3,7 @@ defmodule ExMon do
   alias ExMon.Game.{Actions, Status}
 
   @computer_name "Pikachu"
+  @computer_moves [:move_rnd, :move_avg, :move_heal]
 
   def create_player(name, move_avg, move_rnd, move_heal) do
     Player.build(name, move_rnd, move_avg, move_heal)
@@ -18,9 +19,19 @@ defmodule ExMon do
   end
 
   def make_move(movement) do
+    Game.info()
+    |> Map.get(:status)
+    |> handle_status(movement)
+  end
+
+  defp handle_status(:game_over, _movement), do: Status.print_round_message(Game.info())
+
+  defp handle_status(_status, movement) do
     movement
     |> Actions.fetch_move()
     |> do_move()
+
+    computer_move(Game.info())
   end
 
   defp do_move({:error, movement}) do
@@ -36,4 +47,11 @@ defmodule ExMon do
     Game.info()
     |> Status.print_round_message()
   end
+
+  defp computer_move(%{turn: :computer, status: :continue}) do
+    move = {:ok, Enum.random(@computer_moves)}
+    do_move(move)
+  end
+
+  defp computer_move(_), do: :ok
 end
