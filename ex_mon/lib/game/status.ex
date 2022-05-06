@@ -6,7 +6,7 @@ defmodule ExMon.Game.Status do
   end
 
   def print_round_message(%{status: :continue, turn: player} = info) do
-    IO.puts("\n =========== It's #{player} game continues. =========== \n")
+    IO.puts("\n =========== It's #{player} turn. =========== \n")
     IO.inspect(info)
     IO.puts("---------------------------")
   end
@@ -25,8 +25,8 @@ defmodule ExMon.Game.Status do
     IO.puts("\n =========== The Computer attacked the player dealing #{damage}! =========== \n")
   end
 
-  def print_move_message(:player, :heal, damage) do
-    IO.puts("\n =========== The Computer healed #{damage} itself! =========== \n")
+  def print_heal_message(player, :heal, life) do
+    IO.puts("\n =========== The #{player} healed itself to #{life} points! =========== \n")
   end
 
   def print_wrong_move_message(movement) do
