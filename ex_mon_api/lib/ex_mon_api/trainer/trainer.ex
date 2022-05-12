@@ -1,4 +1,4 @@
-defmodule ExMon.Trainer do
+defmodule ExMonApi.Trainer do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -12,6 +12,12 @@ defmodule ExMon.Trainer do
   end
 
   @required_params [:name, :password]
+
+  def build(params) do
+    params
+    |> changeset()
+    |> apply_action(:insert)
+  end
 
   def changeset(params) do
     %__MODULE__{}
