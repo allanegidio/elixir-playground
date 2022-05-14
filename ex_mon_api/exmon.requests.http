@@ -1,0 +1,23 @@
+@host = http://localhost:4000/api
+@randomId = {{ $randomInt 1 999999 }}
+
+### ===================================================================================
+
+### Create Trainer
+# @name createTrainer
+@trainerId = {{ createTrainer.response.body.trainer.id }}
+POST {{host}}/trainers
+Content-Type: application/json
+
+{
+  "name": "Trainer Teste {{randomId}} (REST Client)",
+  "password": "123456"
+}
+
+### Get Trainer
+# @name getTrainer
+GET {{host}}/trainers/{{trainerId}}
+
+### Delete Trainer
+# @name deleteTrainer
+DELETE {{host}}/trainers/{{trainerId}}
