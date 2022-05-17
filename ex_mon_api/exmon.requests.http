@@ -18,6 +18,28 @@ Content-Type: application/json
 # @name getTrainer
 GET {{host}}/trainers/{{trainerId}}
 
+### Update Trainer
+# @name updateTrainer
+@trainerId = {{ createTrainer.response.body.trainer.id }}
+PUT {{host}}/trainers/{{trainerId}}
+Content-Type: application/json
+
+{
+  "name": "Trainer Updated {{randomId}} (REST Client)",
+  "password": "123456"
+}
+
+### Update Trainer
+# @name updateTrainer
+@trainerId = {{ createTrainer.response.body.trainer.id }}
+PATCH {{host}}/trainers/{{trainerId}}
+Content-Type: application/json
+
+{
+  "name": "Trainer Updated {{randomId}} (REST Client)",
+  "password": "123456"
+}
+
 ### Delete Trainer
 # @name deleteTrainer
 DELETE {{host}}/trainers/{{trainerId}}
