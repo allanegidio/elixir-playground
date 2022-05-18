@@ -43,3 +43,9 @@ Content-Type: application/json
 ### Delete Trainer
 # @name deleteTrainer
 DELETE {{host}}/trainers/{{trainerId}}
+
+### ============================================================================
+
+### Get Pokemon
+# @name getPokemon
+GET {{host}}/pokemons/pikachu
