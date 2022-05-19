@@ -1,4 +1,4 @@
-defmodule ExMon.Pokemon do
+defmodule ExMonApi.Pokemon do
   @keys [:id, :name, :weight, :types]
 
   @enforce_keys @keys

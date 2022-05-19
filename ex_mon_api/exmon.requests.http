@@ -46,6 +46,19 @@ DELETE {{host}}/trainers/{{trainerId}}
 
 ### ============================================================================
 
+### Create Trainer Pokemon
+# @name createTrainerPokemon
+POST {{host}}/trainer_pokemons
+Content-Type: application/json
+
+{
+  "name": "pikachu",
+  "nickname": "boca loka",
+  "trainer_id": "{{trainerId}}"
+}
+
+### ============================================================================
+
 ### Get Pokemon
 # @name getPokemon
 GET {{host}}/pokemons/pikachu
