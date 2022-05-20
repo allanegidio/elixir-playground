@@ -20,7 +20,6 @@ GET {{host}}/trainers/{{trainerId}}
 
 ### Update Trainer
 # @name updateTrainer
-@trainerId = {{ createTrainer.response.body.trainer.id }}
 PUT {{host}}/trainers/{{trainerId}}
 Content-Type: application/json
 
@@ -31,7 +30,6 @@ Content-Type: application/json
 
 ### Update Trainer
 # @name updateTrainer
-@trainerId = {{ createTrainer.response.body.trainer.id }}
 PATCH {{host}}/trainers/{{trainerId}}
 Content-Type: application/json
 
@@ -48,6 +46,7 @@ DELETE {{host}}/trainers/{{trainerId}}
 
 ### Create Trainer Pokemon
 # @name createTrainerPokemon
+@pokemon_id = {{ createTrainerPokemon.response.body.pokemon.id }}
 POST {{host}}/trainer_pokemons
 Content-Type: application/json
 
@@ -56,6 +55,32 @@ Content-Type: application/json
   "nickname": "boca loka",
   "trainer_id": "{{trainerId}}"
 }
+
+### Get Pokemon Trainer
+# @name getPokemonTrainer
+GET {{host}}/trainer_pokemons/{{pokemon_id}}
+
+### Update Pokemon Trainer
+# @name updatePokemonTrainer
+PUT {{host}}/trainer_pokemons/{{pokemon_id}}
+Content-Type: application/json
+
+{
+  "nickname": "Pokemon updated PUT"
+}
+
+### Update Pokemon Trainer
+# @name updatePokemonTrainer
+PATCH {{host}}/trainer_pokemons/{{pokemon_id}}
+Content-Type: application/json
+
+{
+  "nickname": "Pokemon updated PATCH"
+}
+
+### Delete Trainer
+# @name deleteTrainer
+DELETE {{host}}/trainer_pokemons/{{pokemon_id}}
 
 ### ============================================================================
 

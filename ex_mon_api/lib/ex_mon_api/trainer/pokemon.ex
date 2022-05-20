@@ -24,13 +24,18 @@ defmodule ExMonApi.Trainer.Pokemon do
     |> apply_action(:insert)
   end
 
-  def changeset(params), do: create_changeset(%__MODULE__{}, params)
-  def changeset(pokemon, params), do: create_changeset(pokemon, params)
-
-  defp create_changeset(module_or_pokemon, params) do
-    module_or_pokemon
+  def changeset(params) do
+    %__MODULE__{}
     |> cast(params, @required_params)
     |> validate_required(@required_params)
+    |> assoc_constraint(:trainer)
+    |> validate_length(:nickname, min: 2)
+  end
+
+  def update_changeset(pokemon, params) do
+    pokemon
+    |> cast(params, [:nickname])
+    |> validate_required(:nickname)
     |> validate_length(:nickname, min: 2)
   end
 end
