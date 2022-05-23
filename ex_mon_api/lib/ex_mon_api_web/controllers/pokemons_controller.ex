@@ -15,5 +15,5 @@ defmodule ExMonApiWeb.PokemonsController do
     |> json(pokemon)
   end
 
-  defp handle_response({:error, _reason} = error, _conn), do: error
+  defp handle_response({:error, reason}, _conn), do: {:error, reason}
 end

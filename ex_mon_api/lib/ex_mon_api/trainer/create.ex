@@ -8,5 +8,5 @@ defmodule ExMonApi.Trainer.Create do
   end
 
   defp create_trainer({:ok, trainer}), do: Repo.insert(trainer)
-  defp create_trainer({:error, _trainer} = error), do: error
+  defp create_trainer({:error, reason}), do: {:error, reason}
 end

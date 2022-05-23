@@ -24,6 +24,10 @@ defmodule ExMonApiWeb.ErrorView do
     %{message: result}
   end
 
+  def render("404.json", %{result: result}) do
+    %{message: result}
+  end
+
   defp translate_errors(changeset) do
     traverse_errors(changeset, fn {msg, opts} ->
       Enum.reduce(opts, msg, fn {key, value}, acc ->
