@@ -1,21 +1,12 @@
 defmodule ExMonApi.Trainer.Pokemon.Delete do
-  alias Ecto.UUID
   alias ExMonApi.Repo
-  alias ExMonApi.Trainer.Pokemon
 
   def call(id) do
-    case UUID.cast(id) do
-      :error -> {:error, "Invalid ID Format!"}
-      {:ok, uuid} -> delete(uuid)
+    case ExMonApi.fetch_trainer_pokemon(id) do
+      {:error, reason} -> {:error, reason}
+      {:ok, pokemon} -> delete(pokemon)
     end
   end
 
-  defp delete(uuid) do
-    case fetch_pokemon(uuid) do
-      nil -> {:error, "Pokemon not found!"}
-      pokemon -> Repo.delete(pokemon)
-    end
-  end
-
-  defp fetch_pokemon(uuid), do: Repo.get(Pokemon, uuid)
+  defp delete(pokemon), do: Repo.delete(pokemon)
 end

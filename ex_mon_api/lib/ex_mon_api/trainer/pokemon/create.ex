@@ -16,7 +16,7 @@ defmodule ExMonApi.Trainer.Pokemon.Create do
     |> create_pokemon(params)
   end
 
-  defp handle_response({:error, _error} = error, _params), do: error
+  defp handle_response({:error, reason}, _params), do: {:error, reason}
 
   defp create_pokemon(%Pokemon{name: name, weight: weight, types: types}, %{
          "nickname" => nickname,
@@ -36,5 +36,5 @@ defmodule ExMonApi.Trainer.Pokemon.Create do
   end
 
   defp handle_build({:ok, pokemon}), do: Repo.insert(pokemon)
-  defp handle_build({:error, _changeset} = error), do: error
+  defp handle_build({:error, reason}), do: {:error, reason}
 end
