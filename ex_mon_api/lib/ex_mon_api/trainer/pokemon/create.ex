@@ -32,9 +32,15 @@ defmodule ExMonApi.Trainer.Pokemon.Create do
 
     params
     |> TrainerPokemon.build()
-    |> handle_build()
+    |> handle_build(trainer_id)
   end
 
-  defp handle_build({:ok, pokemon}), do: Repo.insert(pokemon)
-  defp handle_build({:error, reason}), do: {:error, reason}
+  defp handle_build({:ok, pokemon}, trainer_id) do
+    case ExMonApi.fetch_trainer(trainer_id) do
+      {:error, reason} -> {:error, reason}
+      {:ok, _trainer} -> Repo.insert(pokemon)
+    end
+  end
+
+  defp handle_build({:error, reason}, _trainer_id), do: {:error, reason}
 end
