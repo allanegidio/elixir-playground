@@ -31,7 +31,7 @@ defmodule ExMon.PokeApi.ClientTest do
 
       response = Client.get_pokemon("troll")
 
-      assert response == {:error, "Pokemon not found!"}
+      assert response == {:error, %{message: "Pokemon not found!", status: 404}}
     end
 
     test "when there is an unexpected error, returns the error " do

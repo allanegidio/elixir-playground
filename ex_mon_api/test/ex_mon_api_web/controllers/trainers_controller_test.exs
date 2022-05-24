@@ -28,7 +28,7 @@ defmodule ExMonApiWeb.Controllers.TrainersControllerTest do
         |> get(Routes.trainers_path(conn, :show, "1234"))
         |> json_response(:bad_request)
 
-      assert %{"message" => "Invalid ID format!"} == response
+      assert %{"message" => %{"message" => "Invalid ID format!", "status" => 400}} == response
     end
   end
 end
