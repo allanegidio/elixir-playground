@@ -1,7 +1,7 @@
 defmodule ExMonApi.Trainer.GetTest do
   use ExMonApi.DataCase
 
-  alias ExMonApi.{Repo, Trainer}
+  alias ExMonApi.{Trainer}
   alias Trainer.{Create, Get}
 
   describe "call/1" do
@@ -14,7 +14,7 @@ defmodule ExMonApi.Trainer.GetTest do
       {:ok, trainer} = Get.call(trainer_id_created)
 
       # Assert
-      assert %Trainer{name: "Allan", id: trainer_id_created} = trainer
+      assert %Trainer{name: "Allan", id: _trainer_id_created} = trainer
     end
 
     test "when id is valid and trainer does not exists, should return error" do
