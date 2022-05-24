@@ -11,7 +11,7 @@ defmodule ExMonApi.Trainer.Pokemon.Get do
 
   def get(uuid) do
     case Repo.get(Pokemon, uuid) do
-      nil -> {:error, %{message: "Trainer not found!", status: 404}}
+      nil -> {:error, %{message: "Pokemon not found!", status: 404}}
       pokemon -> {:ok, Repo.preload(pokemon, :trainer)}
     end
   end
