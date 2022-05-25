@@ -24,7 +24,6 @@ defmodule ExMonApiWeb.TrainerPokemonsController do
   def update(conn, params) do
     params
     |> ExMonApi.update_trainer_pokemon()
-    |> IO.inspect()
     |> handle_response(conn, "update.json", :ok)
   end
 
