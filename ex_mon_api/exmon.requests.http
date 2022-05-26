@@ -16,6 +16,7 @@ Content-Type: application/json
 
 ### Sign In Trainer
 # @name sign_in_trainer
+@token = {{ sign_in_trainer.response.body.token }}
 POST {{host}}/trainers/signin
 Content-Type: application/json
 
@@ -27,11 +28,13 @@ Content-Type: application/json
 ### Get Trainer
 # @name getTrainer
 GET {{host}}/trainers/{{trainerId}}
+Authorization: Bearer {{token}}
 
 ### Update Trainer
 # @name updateTrainer
 PUT {{host}}/trainers/{{trainerId}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Trainer Updated {{randomId}} (REST Client)",
@@ -42,6 +45,7 @@ Content-Type: application/json
 # @name updateTrainer
 PATCH {{host}}/trainers/{{trainerId}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Trainer Updated {{randomId}} (REST Client)",
@@ -51,6 +55,7 @@ Content-Type: application/json
 ### Delete Trainer
 # @name deleteTrainer
 DELETE {{host}}/trainers/{{trainerId}}
+Authorization: Bearer {{token}}
 
 ### ============================================================================
 
@@ -59,6 +64,7 @@ DELETE {{host}}/trainers/{{trainerId}}
 @pokemon_id = {{ createTrainerPokemon.response.body.pokemon.id }}
 POST {{host}}/trainer_pokemons
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "pikachu",
@@ -69,11 +75,13 @@ Content-Type: application/json
 ### Get Pokemon Trainer
 # @name getPokemonTrainer
 GET {{host}}/trainer_pokemons/{{pokemon_id}}
+Authorization: Bearer {{token}}
 
 ### Update Pokemon Trainer
 # @name updatePokemonTrainer
 PUT {{host}}/trainer_pokemons/{{pokemon_id}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nickname": "Pokemon updated PUT"
@@ -83,6 +91,7 @@ Content-Type: application/json
 # @name updatePokemonTrainer
 PATCH {{host}}/trainer_pokemons/{{pokemon_id}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nickname": "Pokemon updated PATCH"
@@ -91,6 +100,7 @@ Content-Type: application/json
 ### Delete Trainer
 # @name deleteTrainer
 DELETE {{host}}/trainer_pokemons/{{pokemon_id}}
+Authorization: Bearer {{token}}
 
 ### ============================================================================
 

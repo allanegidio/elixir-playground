@@ -24,8 +24,8 @@ defmodule ExMonApiWeb.ErrorView do
     %{message: result}
   end
 
-  def render("403.json", %{message: message}) do
-    %{message: message, status: 403}
+  def render("401.json", %{message: message}) do
+    %{message: message, status: 401}
   end
 
   def render("404.json", %{result: result}) do

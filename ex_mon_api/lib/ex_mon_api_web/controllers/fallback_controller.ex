@@ -19,7 +19,7 @@ defmodule ExMonApiWeb.FallbackController do
     conn
     |> put_status(:unauthorized)
     |> put_view(ExMonApiWeb.ErrorView)
-    |> render("403.json", %{message: "Unauthorized"})
+    |> render("401.json", %{message: "Unauthorized"})
   end
 
   def call(conn, {:error, %{message: _message, status: 404} = result}) do
