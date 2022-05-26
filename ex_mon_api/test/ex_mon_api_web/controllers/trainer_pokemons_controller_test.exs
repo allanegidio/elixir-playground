@@ -4,11 +4,22 @@ defmodule ExMonApiWeb.Controllers.TrainerPokemonsControllerTest do
   alias ExMonApi.Trainer
   alias ExMonApi.Trainer.Pokemon
 
+  import ExMonApiWeb.Auth.Guardian
   import Tesla.Mock
 
   @base_url "https://pokeapi.co/api/v2/pokemon/"
 
   describe "create/2" do
+    setup %{conn: conn} do
+      params = %{name: "Allan", password: "123456"}
+      {:ok, trainer} = ExMonApi.create_trainer(params)
+      {:ok, token, _claims} = encode_and_sign(trainer)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn}
+    end
+
     test "when given valid params, returns the pokemon", %{conn: conn} do
       # Arrange
       body = %{
@@ -130,6 +141,16 @@ defmodule ExMonApiWeb.Controllers.TrainerPokemonsControllerTest do
   end
 
   describe "show/2" do
+    setup %{conn: conn} do
+      params = %{name: "Allan", password: "123456"}
+      {:ok, trainer} = ExMonApi.create_trainer(params)
+      {:ok, token, _claims} = encode_and_sign(trainer)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn}
+    end
+
     test "when there is a pokemon with the given id, returns the pokemon", %{conn: conn} do
       # Arrange
       body = %{
@@ -193,6 +214,16 @@ defmodule ExMonApiWeb.Controllers.TrainerPokemonsControllerTest do
   end
 
   describe "delete/2" do
+    setup %{conn: conn} do
+      params = %{name: "Allan", password: "123456"}
+      {:ok, trainer} = ExMonApi.create_trainer(params)
+      {:ok, token, _claims} = encode_and_sign(trainer)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn}
+    end
+
     test "when there is a pokemon with the given id, delete the trainer", %{conn: conn} do
       # Arrange
       body = %{
@@ -258,6 +289,16 @@ defmodule ExMonApiWeb.Controllers.TrainerPokemonsControllerTest do
   end
 
   describe "update/2" do
+    setup %{conn: conn} do
+      params = %{name: "Allan", password: "123456"}
+      {:ok, trainer} = ExMonApi.create_trainer(params)
+      {:ok, token, _claims} = encode_and_sign(trainer)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn}
+    end
+
     test "when there is a trainer with the given id, update the trainer", %{conn: conn} do
       # Arrange
       body = %{
