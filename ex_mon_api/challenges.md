@@ -6,3 +6,4 @@
 - [x] Add tests for create, update, delete and read Pokemon Module
 - [x] Add tests for CRUD controller Trainer
 - [x] Add tests for CRUD controller Pokemon
+- [ ] Remove handle codes from controllers

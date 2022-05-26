@@ -14,6 +14,16 @@ Content-Type: application/json
   "password": "123456"
 }
 
+### Sign In Trainer
+# @name sign_in_trainer
+POST {{host}}/trainers/signin
+Content-Type: application/json
+
+{
+  "id": "{{trainerId}}",
+  "password": "123456"
+}
+
 ### Get Trainer
 # @name getTrainer
 GET {{host}}/trainers/{{trainerId}}
