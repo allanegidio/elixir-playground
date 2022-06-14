@@ -19,6 +19,7 @@ defmodule Servy.Handler do
   end
 
   @pages_path Path.expand("pages", File.cwd!())
+  # @pages_path Path.expand("../../pages", __DIR__)
 
   def route(%Conv{method: "GET", path: "/bears/new"} = conv) do
     @pages_path
@@ -51,14 +52,12 @@ defmodule Servy.Handler do
     BearController.create(conv, conv.params)
   end
 
-  # @pages_path Path.expand("../../pages", __DIR__)
+  def route(%Conv{method: "DELETE", path: "/bears/" <> _id} = conv) do
+    BearController.delete(conv)
+  end
 
   def route(%Conv{path: path} = conv) do
     %Conv{conv | status: 404, resp_body: "No #{path} here!"}
-  end
-
-  def route(%Conv{method: "DELETE", path: "/bears/" <> _id} = conv) do
-    %Conv{conv | status: 403, resp_body: "Deleting a bear is forbidden!"}
   end
 
   # def route(%{method: "GET", path: "/about"} = conv) do
