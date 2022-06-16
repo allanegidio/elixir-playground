@@ -2,6 +2,7 @@ defmodule Servy.Handler do
   alias Servy.Plugins
   alias Servy.Parser
   alias Servy.FileHandler
+  alias Servy.BearController
   # import Servy.Plugins, only: [rewrite_path: 1, track: 1]
 
   alias Servy.Conv
