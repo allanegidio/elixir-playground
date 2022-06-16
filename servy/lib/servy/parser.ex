@@ -12,19 +12,21 @@ defmodule Servy.Parser do
 
     headers = parse_headers(header_lines)
 
+    IO.inspect(headers)
+
     params = parse_params(headers, body)
 
     %Conv{method: method, params: params, header: headers, path: path}
   end
 
-  defp parse_headers(header_lines) do
-    Enum.reduce(header_lines, %{}, fn line, acc ->
+  def parse_headers(header_lines) do
+    Enum.reduce(header_lines, %{}, fn line, headers_so_far ->
       [key, value] = String.split(line, ": ")
-      Map.put(acc, key, value)
+      Map.put(headers_so_far, key, value)
     end)
   end
 
-  defp parse_params("application/x-www-form-urlencoded", params_string) do
+  defp parse_params(%{"Content-Type" => "application/x-www-form-urlencoded"}, params_string) do
     params_string
     |> String.trim()
     |> URI.decode_query()
