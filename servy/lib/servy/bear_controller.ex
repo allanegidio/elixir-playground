@@ -20,7 +20,7 @@ defmodule Servy.BearController do
     %{
       conv
       | status: 201,
-        resp_body: "Create a #{type} bear named #{name}!"
+        resp_body: "Created a #{type} bear named #{name}!"
     }
   end
 
