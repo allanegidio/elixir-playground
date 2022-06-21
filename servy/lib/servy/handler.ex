@@ -3,6 +3,7 @@ defmodule Servy.Handler do
   alias Servy.Parser
   alias Servy.FileHandler
   alias Servy.BearController
+  alias Servy.Api.BearController, as: ApiBearController
   # import Servy.Plugins, only: [rewrite_path: 1, track: 1]
 
   alias Servy.Conv
@@ -16,6 +17,7 @@ defmodule Servy.Handler do
     |> route
     |> emojify
     |> Plugins.track()
+    |> put_content_length
     |> format_response
   end
 
@@ -40,6 +42,10 @@ defmodule Servy.Handler do
     %Conv{conv | status: 200, resp_body: "Bears, Lions, Tigers"}
   end
 
+  def route(%Conv{method: "GET", path: "/api/bears"} = conv) do
+    ApiBearController.index(conv)
+  end
+
   def route(%Conv{method: "GET", path: "/bears"} = conv) do
     BearController.index(conv)
   end
@@ -50,6 +56,10 @@ defmodule Servy.Handler do
   end
 
   def route(%Conv{method: "POST", path: "/bears"} = conv) do
+    BearController.create(conv, conv.params)
+  end
+
+  def route(%Conv{method: "POST", path: "/api/bears"} = conv) do
     BearController.create(conv, conv.params)
   end
 
@@ -82,13 +92,24 @@ defmodule Servy.Handler do
 
   def emojify(%Conv{} = conv), do: conv
 
+  def put_content_length(%Conv{} = conv) do
+    headers = Map.put(conv.resp_headers, "Content-Length", String.length(conv.resp_body))
+    %Conv{conv | resp_headers: headers}
+  end
+
   def format_response(%Conv{} = conv) do
     """
     HTTP/1.1 #{Conv.full_status(conv)}\r
-    Content-Type: text/html\r
-    Content-Length: #{String.length(conv.resp_body)}\r
+    #{format_response_headers(conv)}
     \r
     #{conv.resp_body}
     """
+  end
+
+  defp format_response_headers(%Conv{} = conv) do
+    Enum.map(conv.resp_headers, fn {key, value} -> "#{key}: #{value}\r" end)
+    |> Enum.sort()
+    |> Enum.reverse()
+    |> Enum.join("\n")
   end
 end

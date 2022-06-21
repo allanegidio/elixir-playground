@@ -3,16 +3,16 @@ defmodule Servy.Wildthings do
 
   def list_bears do
     [
-      %Bear{id: 1, name: "Teddy", type: "Brown", hibernating: true},
-      %Bear{id: 2, name: "Smokey", type: "Black"},
-      %Bear{id: 3, name: "Paddington", type: "Brown"},
-      %Bear{id: 4, name: "Scarface", type: "Grizzly", hibernating: true},
-      %Bear{id: 5, name: "Snow", type: "Polar"},
-      %Bear{id: 6, name: "Brutus", type: "Grizzly"},
-      %Bear{id: 7, name: "Rosie", type: "Black", hibernating: true},
-      %Bear{id: 8, name: "Roscoe", type: "Panda"},
-      %Bear{id: 9, name: "Iceman", type: "Polar", hibernating: true},
-      %Bear{id: 10, name: "Kenai", type: "Grizzly"}
+      %Bear{type: "Brown", name: "Teddy", id: 1, hibernating: true},
+      %Bear{type: "Black", name: "Smokey", id: 2, hibernating: false},
+      %Bear{type: "Brown", name: "Paddington", id: 3, hibernating: false},
+      %Bear{type: "Grizzly", name: "Scarface", id: 4, hibernating: true},
+      %Bear{type: "Polar", name: "Snow", id: 5, hibernating: false},
+      %Bear{type: "Grizzly", name: "Brutus", id: 6, hibernating: false},
+      %Bear{type: "Black", name: "Rosie", id: 7, hibernating: true},
+      %Bear{type: "Panda", name: "Roscoe", id: 8, hibernating: false},
+      %Bear{type: "Polar", name: "Iceman", id: 9, hibernating: true},
+      %Bear{type: "Grizzly", name: "Kenai", id: 10, hibernating: false}
     ]
   end
 
