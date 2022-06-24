@@ -24,6 +24,12 @@ defmodule Servy.Handler do
   @pages_path Path.expand("pages", File.cwd!())
   # @pages_path Path.expand("../../pages", __DIR__)
 
+  def route(%Conv{method: "GET", path: "/hibernate/" <> time} = conv) do
+    time |> String.to_integer() |> :timer.sleep()
+
+    %{conv | status: 200, resp_body: "Awake!"}
+  end
+
   def route(%Conv{method: "GET", path: "/bears/new"} = conv) do
     @pages_path
     |> Path.join("form.html")
@@ -31,11 +37,23 @@ defmodule Servy.Handler do
     |> FileHandler.handle_file(conv)
   end
 
+  # def route(%Conv{method: "GET", path: "/kaboom"}) do
+  #   raise "Kaboom!"
+  # end
+
   def route(%Conv{method: "GET", path: "/about"} = conv) do
     @pages_path
     |> Path.join("about.html")
     |> File.read()
     |> FileHandler.handle_file(conv)
+  end
+
+  def route(%Conv{method: "GET", path: "/pages/" <> name} = conv) do
+    @pages_path
+    |> Path.join("#{name}.md")
+    |> File.read()
+    |> FileHandler.handle_file(conv)
+    |> markdown_to_html()
   end
 
   def route(%Conv{method: "GET", path: "/wildthings"} = conv) do
@@ -112,4 +130,10 @@ defmodule Servy.Handler do
     |> Enum.reverse()
     |> Enum.join("\n")
   end
+
+  defp markdown_to_html(%Conv{status: 200} = conv) do
+    %{conv | resp_body: Earmark.as_html!(conv.resp_body)}
+  end
+
+  defp markdown_to_html(%Conv{} = conv), do: conv
 end
