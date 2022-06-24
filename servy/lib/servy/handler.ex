@@ -1,11 +1,12 @@
 defmodule Servy.Handler do
   alias Servy.Plugins
+  # import Servy.Plugins, only: [rewrite_path: 1, track: 1]
+
   alias Servy.Parser
   alias Servy.FileHandler
   alias Servy.BearController
+  alias Servy.VideoCam
   alias Servy.Api.BearController, as: ApiBearController
-  # import Servy.Plugins, only: [rewrite_path: 1, track: 1]
-
   alias Servy.Conv
 
   @moduledoc "Handles HTTP requests."
@@ -19,6 +20,33 @@ defmodule Servy.Handler do
     |> Plugins.track()
     |> put_content_length
     |> format_response
+  end
+
+  def route(%Conv{method: "GET", path: "/snapshots"} = conv) do
+    process_parent = self()
+
+    spawn(fn -> send(process_parent, {:result, VideoCam.get_snapshot("cam-1")}) end)
+    spawn(fn -> send(process_parent, {:result, VideoCam.get_snapshot("cam-2")}) end)
+    spawn(fn -> send(process_parent, {:result, VideoCam.get_snapshot("cam-3")}) end)
+
+    snapshot1 =
+      receive do
+        {:result, filename} -> filename
+      end
+
+    snapshot2 =
+      receive do
+        {:result, filename} -> filename
+      end
+
+    snapshot3 =
+      receive do
+        {:result, filename} -> filename
+      end
+
+    snapshots = [snapshot1, snapshot2, snapshot3]
+
+    %{conv | status: 200, resp_body: inspect(snapshots)}
   end
 
   @pages_path Path.expand("pages", File.cwd!())
@@ -37,9 +65,9 @@ defmodule Servy.Handler do
     |> FileHandler.handle_file(conv)
   end
 
-  # def route(%Conv{method: "GET", path: "/kaboom"}) do
-  #   raise "Kaboom!"
-  # end
+  def route(%Conv{method: "GET", path: "/kaboom"}) do
+    raise "Kaboom!"
+  end
 
   def route(%Conv{method: "GET", path: "/about"} = conv) do
     @pages_path
