@@ -5,9 +5,9 @@ defmodule Servy.Handler do
   alias Servy.Parser
   alias Servy.FileHandler
   alias Servy.BearController
-  alias Servy.VideoCam
   alias Servy.Api.BearController, as: ApiBearController
   alias Servy.Conv
+  alias Servy.Fetcher
 
   @moduledoc "Handles HTTP requests."
   @doc "Transforms the request into a response."
@@ -23,26 +23,13 @@ defmodule Servy.Handler do
   end
 
   def route(%Conv{method: "GET", path: "/snapshots"} = conv) do
-    process_parent = self()
+    Fetcher.async("cam-1")
+    Fetcher.async("cam-2")
+    Fetcher.async("cam-3")
 
-    spawn(fn -> send(process_parent, {:result, VideoCam.get_snapshot("cam-1")}) end)
-    spawn(fn -> send(process_parent, {:result, VideoCam.get_snapshot("cam-2")}) end)
-    spawn(fn -> send(process_parent, {:result, VideoCam.get_snapshot("cam-3")}) end)
-
-    snapshot1 =
-      receive do
-        {:result, filename} -> filename
-      end
-
-    snapshot2 =
-      receive do
-        {:result, filename} -> filename
-      end
-
-    snapshot3 =
-      receive do
-        {:result, filename} -> filename
-      end
+    snapshot1 = Fetcher.get_result()
+    snapshot2 = Fetcher.get_result()
+    snapshot3 = Fetcher.get_result()
 
     snapshots = [snapshot1, snapshot2, snapshot3]
 
