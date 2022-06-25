@@ -9,6 +9,9 @@ defmodule Servy.Fetcher do
     receive do
       {^pid, :result, value} ->
         value
+    after
+      2000 ->
+        raise "Timed out!"
     end
   end
 end
