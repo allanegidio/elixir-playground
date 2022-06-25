@@ -4,7 +4,7 @@ defmodule HttpServerTest do
   alias Servy.HttpServer
   alias Servy.HttpClient
 
-  describe "test" do
+  describe "Testing HTTP Server" do
     setup do
       spawn(HttpServer, :start, [5000])
 
@@ -31,6 +31,7 @@ defmodule HttpServerTest do
              """
     end
 
+    @tag :skip
     test "accepts a request on a socket and sends back a response using HTTPoison" do
       {:ok, response} = HTTPoison.get("http://localhost:5000/wildthings")
 
@@ -38,6 +39,7 @@ defmodule HttpServerTest do
       assert response.body == "🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉"
     end
 
+    @tag :skip
     test "accepts a 5 concurrent requests on a socket and sends back a response using HTTPoison " do
       parent = self()
       max_concurrent_requests = 5
