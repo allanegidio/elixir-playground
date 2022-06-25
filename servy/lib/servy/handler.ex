@@ -9,6 +9,7 @@ defmodule Servy.Handler do
   alias Servy.Conv
   alias Servy.Fetcher
   alias Servy.VideoCam
+  alias Servy.Tracker
 
   @moduledoc "Handles HTTP requests."
   @doc "Transforms the request into a response."
@@ -24,16 +25,21 @@ defmodule Servy.Handler do
   end
 
   def route(%Conv{method: "GET", path: "/sensors"} = conv) do
+    pid = Fetcher.async(fn -> Tracker.get_location("bigfoot") end)
+
+    where_is_bigfoot = Fetcher.get_result(pid)
+
+    %{conv | status: 200, resp_body: inspect(where_is_bigfoot)}
   end
 
   def route(%Conv{method: "GET", path: "/snapshots"} = conv) do
-    Fetcher.async(fn -> VideoCam.get_snapshot("cam-1") end)
-    Fetcher.async(fn -> VideoCam.get_snapshot("cam-2") end)
-    Fetcher.async(fn -> VideoCam.get_snapshot("cam-3") end)
+    pid_1 = Fetcher.async(fn -> VideoCam.get_snapshot("cam-1") end)
+    pid_2 = Fetcher.async(fn -> VideoCam.get_snapshot("cam-2") end)
+    pid_3 = Fetcher.async(fn -> VideoCam.get_snapshot("cam-3") end)
 
-    snapshot1 = Fetcher.get_result()
-    snapshot2 = Fetcher.get_result()
-    snapshot3 = Fetcher.get_result()
+    snapshot1 = Fetcher.get_result(pid_1)
+    snapshot2 = Fetcher.get_result(pid_2)
+    snapshot3 = Fetcher.get_result(pid_3)
 
     snapshots = [snapshot1, snapshot2, snapshot3]
 
