@@ -360,9 +360,9 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 76\r
+    Content-Length: 117\r
     \r
-    🎉🎉🎉🎉🎉[\"cam-1-snapshot.jpg\",\"cam-2-snapshot.jpg\",\"cam-3-snapshot.jpg\"]🎉🎉🎉🎉🎉
+    🎉🎉🎉🎉🎉{[\"cam-1-snapshot.jpg\",\"cam-2-snapshot.jpg\",\"cam-3-snapshot.jpg\"],%{lat:\"29.0469N\",lng:\"98.8667W\"}}🎉🎉🎉🎉🎉
     """
 
     assert remove_whitespace(response) == remove_whitespace(expected_response)
