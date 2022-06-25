@@ -10,6 +10,7 @@ defmodule Servy.Handler do
   alias Servy.Fetcher
   alias Servy.VideoCam
   alias Servy.Tracker
+  alias Servy.View
 
   @moduledoc "Handles HTTP requests."
   @doc "Transforms the request into a response."
@@ -42,7 +43,7 @@ defmodule Servy.Handler do
 
     where_is_bigfoot = Task.await(task, :infinity)
 
-    %{conv | status: 200, resp_body: inspect({snapshots, where_is_bigfoot})}
+    View.render(conv, "snapshots.eex", snapshots: snapshots, location: where_is_bigfoot)
   end
 
   @pages_path Path.expand("pages", File.cwd!())
