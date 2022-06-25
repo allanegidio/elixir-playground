@@ -8,6 +8,7 @@ defmodule Servy.Handler do
   alias Servy.Api.BearController, as: ApiBearController
   alias Servy.Conv
   alias Servy.Fetcher
+  alias Servy.VideoCam
 
   @moduledoc "Handles HTTP requests."
   @doc "Transforms the request into a response."
@@ -22,10 +23,13 @@ defmodule Servy.Handler do
     |> format_response
   end
 
+  def route(%Conv{method: "GET", path: "/sensors"} = conv) do
+  end
+
   def route(%Conv{method: "GET", path: "/snapshots"} = conv) do
-    Fetcher.async("cam-1")
-    Fetcher.async("cam-2")
-    Fetcher.async("cam-3")
+    Fetcher.async(fn -> VideoCam.get_snapshot("cam-1") end)
+    Fetcher.async(fn -> VideoCam.get_snapshot("cam-2") end)
+    Fetcher.async(fn -> VideoCam.get_snapshot("cam-3") end)
 
     snapshot1 = Fetcher.get_result()
     snapshot2 = Fetcher.get_result()
