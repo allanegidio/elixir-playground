@@ -41,24 +41,43 @@ defmodule HttpServerTest do
 
     @tag :skip
     test "accepts a 5 concurrent requests on a socket and sends back a response using HTTPoison " do
-      parent = self()
       max_concurrent_requests = 5
 
-      for _ <- 1..max_concurrent_requests do
-        spawn(fn ->
-          {:ok, response} = HTTPoison.get("http://localhost:5000/wildthings")
+      1..max_concurrent_requests
+      |> Enum.map(fn _ ->
+        Task.async(fn -> HTTPoison.get("http://localhost:5000/wildthings") end)
+      end)
+      |> Enum.map(&Task.await/1)
+      |> Enum.map(&assert_successful_response/1)
+    end
 
-          send(parent, {:ok, response})
-        end)
-      end
+    defp assert_successful_response({:ok, response}) do
+      assert response.status_code == 200
+      assert response.body == "🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉"
+    end
 
-      for _ <- 1..max_concurrent_requests do
-        receive do
-          {:ok, response} ->
-            assert response.status_code == 200
-            assert response.body == "🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉"
-        end
-      end
+    test "test a lot of URL" do
+      urls = [
+        "http://localhost:5000/wildthings",
+        "http://localhost:5000/bears",
+        "http://localhost:5000/bears/1",
+        "http://localhost:5000/wildlife",
+        "http://localhost:5000/api/bears"
+      ]
+
+      urls
+      |> Enum.map(&Task.async(fn -> HTTPoison.get(&1) end))
+      |> Enum.map(&Task.await/1)
+      |> Enum.map(&assert_ok_response/1)
+    end
+
+    defp assert_successful_response({:ok, response}) do
+      assert response.status_code == 200
+      assert response.body == "🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉"
+    end
+
+    defp assert_ok_response({:ok, response}) do
+      assert response.status_code == 200
     end
   end
 end
