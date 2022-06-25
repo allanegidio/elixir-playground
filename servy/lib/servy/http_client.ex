@@ -14,16 +14,3 @@ defmodule Servy.HttpClient do
     response
   end
 end
-
-request = """
-GET /bears HTTP/1.1\r
-Host: example.com\r
-User-Agent: ExampleBrowser/1.0\r
-Accept: */*\r
-\r
-"""
-
-spawn(fn -> Servy.HttpServer.start(5000) end)
-
-response = Servy.HttpClient.send_request(request)
-IO.puts(response)
