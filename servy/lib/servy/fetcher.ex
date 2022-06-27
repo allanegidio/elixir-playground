@@ -10,7 +10,7 @@ defmodule Servy.Fetcher do
       {^pid, :result, value} ->
         value
     after
-      :timer.seconds(2) ->
+      :timer.seconds(20) ->
         raise "Timed out!"
     end
   end
