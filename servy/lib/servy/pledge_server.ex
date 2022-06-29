@@ -1,7 +1,11 @@
 defmodule Servy.PledgeServer do
+  @name :pledge_server
+
   def start do
     IO.puts("Starting the pledge server...")
-    spawn(__MODULE__, :listen_loop, [[]])
+    pid = spawn(__MODULE__, :listen_loop, [[]])
+    Process.register(pid, :pledge_server)
+    pid
   end
 
   def listen_loop(cache) do
@@ -23,16 +27,16 @@ defmodule Servy.PledgeServer do
     end
   end
 
-  def create_plage(pid, name, amount) do
-    send(pid, {self(), :create_pledge, name, amount})
+  def create_pledge(name, amount) do
+    send(@name, {self(), :create_pledge, name, amount})
 
     receive do
-      {:response, id} -> "pledge-#{id} was created!" |> IO.inspect()
+      {:response, id} -> "pledge-#{id} was created!\n" |> IO.inspect()
     end
   end
 
-  def recent_pledges(pid) do
-    send(pid, {self(), :recent_pledges})
+  def recent_pledges() do
+    send(@name, {self(), :recent_pledges})
 
     receive do
       {:response, pledges} -> pledges
@@ -44,14 +48,14 @@ defmodule Servy.PledgeServer do
   end
 end
 
-alias Servy.PledgeServer
+# alias Servy.PledgeServer
 
-pid = PledgeServer.start()
+# pid = PledgeServer.start()
 
-PledgeServer.create_plage(pid, "larry", 10)
-PledgeServer.create_plage(pid, "moe", 20)
-PledgeServer.create_plage(pid, "curly", 30)
-PledgeServer.create_plage(pid, "daisy", 40)
-PledgeServer.create_plage(pid, "grace", 50)
+# PledgeServer.create_plage("larry", 10)
+# PledgeServer.create_plage("moe", 20)
+# PledgeServer.create_plage("curly", 30)
+# PledgeServer.create_plage("daisy", 40)
+# PledgeServer.create_plage("grace", 50)
 
-IO.inspect(PledgeServer.recent_pledges(pid))
+# IO.inspect(PledgeServer.recent_pledges())
