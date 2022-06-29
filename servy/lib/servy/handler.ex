@@ -25,6 +25,14 @@ defmodule Servy.Handler do
     |> format_response
   end
 
+  def route(%Conv{method: "POST", path: "/pledges"} = conv) do
+    Servy.PledgeController.create(conv, conv.params)
+  end
+
+  def route(%Conv{method: "GET", path: "/pledges"} = conv) do
+    Servy.PledgeController.index(conv)
+  end
+
   def route(%Conv{method: "GET", path: "/sensors"} = conv) do
     pid = Fetcher.async(fn -> Tracker.get_location("bigfoot") end)
 
@@ -114,17 +122,17 @@ defmodule Servy.Handler do
     %Conv{conv | status: 404, resp_body: "No #{path} here!"}
   end
 
-  # def route(%{method: "GET", path: "/about"} = conv) do
-  #   file_path =
-  #     Path.expand("../../pages/", __DIR__)
-  #     |> Path.join("about.html")
+  def route(%{method: "GET", path: "/about"} = conv) do
+    file_path =
+      Path.expand("../../pages/", __DIR__)
+      |> Path.join("about.html")
 
-  #   case File.read(file_path) do
-  #     {:ok, content} -> %{conv | status: 200, resp_body: content}
-  #     {:error, :enoent} -> %{conv | status: 404, resp_body: "File not found!"}
-  #     {:error, reason} -> %{conv | status: 500, resp_body: "File error: #{reason}"}
-  #   end
-  # end
+    case File.read(file_path) do
+      {:ok, content} -> %{conv | status: 200, resp_body: content}
+      {:error, :enoent} -> %{conv | status: 404, resp_body: "File not found!"}
+      {:error, reason} -> %{conv | status: 500, resp_body: "File error: #{reason}"}
+    end
+  end
 
   def emojify(%Conv{status: 200} = conv) do
     emojies = String.duplicate("🎉", 5)
