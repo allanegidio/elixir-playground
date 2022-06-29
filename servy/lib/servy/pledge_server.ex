@@ -1,30 +1,13 @@
 defmodule Servy.PledgeServer do
   @name :pledge_server
 
-  def start do
+  # Client functions
+
+  def start(initial_state \\ []) do
     IO.puts("Starting the pledge server...")
-    pid = spawn(__MODULE__, :listen_loop, [[]])
+    pid = spawn(__MODULE__, :listen_loop, [initial_state])
     Process.register(pid, :pledge_server)
     pid
-  end
-
-  def listen_loop(cache) do
-    IO.puts("\nWaiting for a message...")
-
-    receive do
-      {sender, :create_pledge, name, amount} ->
-        {:ok, id} = send_pledge_to_service(name, amount)
-        most_recent_pledges = Enum.take(cache, 2)
-
-        new_cache = [{name, amount} | most_recent_pledges]
-
-        send(sender, {:response, id})
-        listen_loop(new_cache)
-
-      {sender, :recent_pledges} ->
-        send(sender, {:response, cache})
-        listen_loop(cache)
-    end
   end
 
   def create_pledge(name, amount) do
@@ -43,19 +26,56 @@ defmodule Servy.PledgeServer do
     end
   end
 
+  def total_pledged() do
+    send(@name, {self(), :total_pledged})
+
+    receive do
+      {:response, total} -> total
+    end
+  end
+
+  # Server functions
+  def listen_loop(cache) do
+    IO.puts("\nWaiting for a message...")
+
+    receive do
+      {sender, :create_pledge, name, amount} ->
+        {:ok, id} = send_pledge_to_service(name, amount)
+        most_recent_pledges = Enum.take(cache, 2)
+
+        new_cache = [{name, amount} | most_recent_pledges]
+
+        send(sender, {:response, id})
+        listen_loop(new_cache)
+
+      {sender, :recent_pledges} ->
+        send(sender, {:response, cache})
+        listen_loop(cache)
+
+      {sender, :total_pledged} ->
+        total = Enum.map(cache, &elem(&1, 1)) |> Enum.sum()
+        send(sender, {:response, total})
+        listen_loop(cache)
+
+      unexpected ->
+        IO.puts("Unexpected messages: #{inspect(unexpected)}")
+    end
+  end
+
   defp send_pledge_to_service(_name, _amount) do
     {:ok, "pledge-#{:rand.uniform(1000)}"}
   end
 end
 
-# alias Servy.PledgeServer
+alias Servy.PledgeServer
 
-# pid = PledgeServer.start()
+pid = PledgeServer.start()
 
-# PledgeServer.create_plage("larry", 10)
-# PledgeServer.create_plage("moe", 20)
-# PledgeServer.create_plage("curly", 30)
-# PledgeServer.create_plage("daisy", 40)
-# PledgeServer.create_plage("grace", 50)
+PledgeServer.create_pledge("larry", 10)
+PledgeServer.create_pledge("moe", 20)
+PledgeServer.create_pledge("curly", 30)
+PledgeServer.create_pledge("daisy", 40)
+PledgeServer.create_pledge("grace", 50)
 
-# IO.inspect(PledgeServer.recent_pledges())
+IO.inspect(PledgeServer.recent_pledges())
+IO.inspect(PledgeServer.total_pledged())
