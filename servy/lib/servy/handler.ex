@@ -144,7 +144,7 @@ defmodule Servy.Handler do
   def emojify(%Conv{} = conv), do: conv
 
   def put_content_length(%Conv{} = conv) do
-    headers = Map.put(conv.resp_headers, "Content-Length", String.length(conv.resp_body))
+    headers = Map.put(conv.resp_headers, "Content-Length", byte_size(conv.resp_body))
     %Conv{conv | resp_headers: headers}
   end
 
