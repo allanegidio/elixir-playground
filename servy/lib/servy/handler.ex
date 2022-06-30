@@ -11,6 +11,7 @@ defmodule Servy.Handler do
   alias Servy.VideoCam
   alias Servy.Tracker
   alias Servy.View
+  alias Servy.InvalidRouteCounter
 
   @moduledoc "Handles HTTP requests."
   @doc "Transforms the request into a response."
@@ -23,6 +24,21 @@ defmodule Servy.Handler do
     |> Plugins.track()
     |> put_content_length
     |> format_response
+  end
+
+  def route(%Conv{method: "GET", path: "/404s"} = conv) do
+    counts = Servy.InvalidRouteCounter.get_counts()
+
+    %{conv | status: 200, resp_body: inspect(counts)}
+  end
+
+  def track(%Conv{status: 404, path: path} = conv) do
+    if Mix.env() != :test do
+      IO.puts("Warning: #{path} is on the loose!")
+      InvalidRouteCounter.bump_count(path)
+    end
+
+    conv
   end
 
   def route(%Conv{method: "POST", path: "/pledges"} = conv) do
