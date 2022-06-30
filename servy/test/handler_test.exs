@@ -17,7 +17,7 @@ defmodule HandlerTest do
     assert response == """
            HTTP/1.1 200 OK\r
            Content-Type: text/html\r
-           Content-Length: 30\r
+           Content-Length: 60\r
            \r
            🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉
            """
@@ -37,7 +37,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 365\r
+    Content-Length: 395\r
     \r
     🎉🎉🎉🎉🎉<h1>All The Bears!</h1>
 
@@ -92,7 +92,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 81\r
+    Content-Length: 111\r
     \r
     🎉🎉🎉🎉🎉<h1>Show Bear</h1>
     <p>
@@ -117,7 +117,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 81\r
+    Content-Length: 111\r
     \r
     🎉🎉🎉🎉🎉<h1>Show Bear</h1>
     <p>
@@ -164,7 +164,7 @@ defmodule HandlerTest do
     assert response == """
            HTTP/1.1 200 OK\r
            Content-Type: text/html\r
-           Content-Length: 30\r
+           Content-Length: 60\r
            \r
            🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉
            """
@@ -184,7 +184,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 329\r
+    Content-Length: 359\r
     \r
     🎉🎉🎉🎉🎉<h1>Clark's Wildthings Refuge</h1>
 
@@ -214,7 +214,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 656\r
+    Content-Length: 692\r
     \r
     🎉🎉🎉🎉🎉<h1>FrequentlyAskedQuestions</h1>
     <ul>
@@ -249,7 +249,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 241\r
+    Content-Length: 271\r
     \r
     🎉🎉🎉🎉🎉<form action="/bears" method="POST">
     <p>
@@ -306,7 +306,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: application/json\r
-    Content-Length: 615\r
+    Content-Length: 645\r
     \r
     🎉🎉🎉🎉🎉[{"type":"Brown","name":"Teddy","id":1,"hibernating":true},
      {"type":"Black","name":"Smokey","id":2,"hibernating":false},
@@ -360,7 +360,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 312\r
+    Content-Length: 342\r
     \r
     🎉🎉🎉🎉🎉<h1>Sensors</h1><h2>Snapshots</h2><ul><li><imgsrc=\"cam-1-snapshot.jpg\"alt=\"snapshot\"></li><li><imgsrc=\"cam-2-snapshot.jpg\"alt=\"snapshot\"></li><li><imgsrc=\"cam-3-snapshot.jpg\"alt=\"snapshot\"></li></ul><h2>WhereIsBigfoot?</h2>%{lat:\"29.0469N\",lng:\"98.8667W\"}🎉🎉🎉🎉🎉
     """
@@ -382,7 +382,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 47\r
+    Content-Length: 77\r
     \r
     🎉🎉🎉🎉🎉%{lat:\"29.0469N\",lng:\"98.8667W\"}🎉🎉🎉🎉🎉
     """
