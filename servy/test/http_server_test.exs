@@ -25,7 +25,7 @@ defmodule HttpServerTest do
       assert response == """
              HTTP/1.1 200 OK\r
              Content-Type: text/html\r
-             Content-Length: 30\r
+             Content-Length: 60\r
              \r
              🎉🎉🎉🎉🎉Bears, Lions, Tigers🎉🎉🎉🎉🎉
              """
