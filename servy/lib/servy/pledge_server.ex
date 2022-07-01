@@ -2,7 +2,6 @@ defmodule Servy.PledgeServer do
   @name :pledge_server
 
   # Client functions
-
   def start(initial_state \\ []) do
     IO.puts("Starting the pledge server...")
     pid = spawn(__MODULE__, :listen_loop, [initial_state])
@@ -11,26 +10,22 @@ defmodule Servy.PledgeServer do
   end
 
   def create_pledge(name, amount) do
-    send(@name, {self(), :create_pledge, name, amount})
-
-    receive do
-      {:response, id} -> "pledge-#{id} was created!\n" |> IO.inspect()
-    end
+    call(@name, {:create_pledge, name, amount})
   end
 
   def recent_pledges() do
-    send(@name, {self(), :recent_pledges})
-
-    receive do
-      {:response, pledges} -> pledges
-    end
+    call(@name, :recent_pledges)
   end
 
   def total_pledged() do
-    send(@name, {self(), :total_pledged})
+    call(@name, :total_pledged)
+  end
+
+  def call(pid, message) do
+    send(pid, {self(), message})
 
     receive do
-      {:response, total} -> total
+      {:response, response} -> response
     end
   end
 
@@ -66,16 +61,3 @@ defmodule Servy.PledgeServer do
     {:ok, "pledge-#{:rand.uniform(1000)}"}
   end
 end
-
-alias Servy.PledgeServer
-
-PledgeServer.start()
-
-PledgeServer.create_pledge("larry", 10)
-PledgeServer.create_pledge("moe", 20)
-PledgeServer.create_pledge("curly", 30)
-PledgeServer.create_pledge("daisy", 40)
-PledgeServer.create_pledge("grace", 50)
-
-IO.inspect(PledgeServer.recent_pledges())
-IO.inspect(PledgeServer.total_pledged())
