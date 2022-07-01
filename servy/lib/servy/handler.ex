@@ -26,12 +26,6 @@ defmodule Servy.Handler do
     |> format_response
   end
 
-  def route(%Conv{method: "GET", path: "/404s"} = conv) do
-    counts = Servy.InvalidRouteCounter.get_counts()
-
-    %{conv | status: 200, resp_body: inspect(counts)}
-  end
-
   def track(%Conv{status: 404, path: path} = conv) do
     if Mix.env() != :test do
       IO.puts("Warning: #{path} is on the loose!")
@@ -41,8 +35,18 @@ defmodule Servy.Handler do
     conv
   end
 
+  def route(%Conv{method: "GET", path: "/404s"} = conv) do
+    counts = Servy.InvalidRouteCounter.get_counts()
+
+    %{conv | status: 200, resp_body: inspect(counts)}
+  end
+
   def route(%Conv{method: "POST", path: "/pledges"} = conv) do
     Servy.PledgeController.create(conv, conv.params)
+  end
+
+  def route(%Conv{method: "GET", path: "/pledges/new"} = conv) do
+    Servy.PledgeController.new(conv)
   end
 
   def route(%Conv{method: "GET", path: "/pledges"} = conv) do

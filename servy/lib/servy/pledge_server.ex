@@ -69,7 +69,7 @@ end
 
 alias Servy.PledgeServer
 
-pid = PledgeServer.start()
+PledgeServer.start()
 
 PledgeServer.create_pledge("larry", 10)
 PledgeServer.create_pledge("moe", 20)
