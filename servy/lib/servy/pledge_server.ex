@@ -1,6 +1,6 @@
 defmodule Servy.GenericServer do
-  def start(callback_module, initial_state \\ [], name) do
-    pid = spawn(callback_module, :listen_loop, [initial_state, callback_module])
+  def start(callback_module, initial_state, name) do
+    pid = spawn(__MODULE__, :listen_loop, [initial_state, callback_module])
     Process.register(pid, name)
     pid
   end
@@ -32,6 +32,7 @@ defmodule Servy.GenericServer do
 
       unexpected ->
         IO.puts("Unexpected messages: #{inspect(unexpected)}")
+        listen_loop(cache, callback_module)
     end
   end
 end
@@ -94,3 +95,22 @@ defmodule Servy.PledgeServer do
     {:ok, "pledge-#{:rand.uniform(1000)}"}
   end
 end
+
+# alias Servy.PledgeServer
+
+# pid = PledgeServer.start()
+
+# send(pid, {:stop, "hammertime"})
+
+# IO.inspect(PledgeServer.create_pledge("larry", 10))
+# IO.inspect(PledgeServer.create_pledge("moe", 20))
+# IO.inspect(PledgeServer.create_pledge("curly", 30))
+# IO.inspect(PledgeServer.create_pledge("daisy", 40))
+
+# PledgeServer.clear()
+
+# IO.inspect(PledgeServer.create_pledge("grace", 50))
+
+# IO.inspect(PledgeServer.recent_pledges())
+
+# IO.inspect(PledgeServer.total_pledged())
