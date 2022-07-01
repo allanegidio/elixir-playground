@@ -1,60 +1,46 @@
 defmodule Servy.InvalidRouteCounter do
   @name :counter_server
 
-  # Client functions
+  alias Servy.GenericServer
 
+  # Client functions
   def start(initial_state \\ %{}) do
-    IO.puts("Starting the pledge server...")
-    pid = spawn(__MODULE__, :listen_loop, [initial_state])
-    Process.register(pid, @name)
-    pid
+    IO.puts("Starting the invalid route server...")
+    GenericServer.start(__MODULE__, initial_state, @name)
   end
 
   def bump_count(path) do
-    send(@name, {self(), :bump_count, path})
-
-    receive do
-      {:response, count} -> count
-    end
+    GenericServer.call(@name, {:bump_count, path})
   end
 
   def get_counts() do
-    send(@name, {self(), :get_counts})
-
-    receive do
-      {:response, counts} -> counts
-    end
+    GenericServer.call(@name, :get_counts)
   end
 
   def get_count(path) do
-    send(@name, {self(), :get_count, path})
-
-    receive do
-      {:response, counts} -> counts
-    end
+    GenericServer.call(@name, {:get_count, path})
   end
 
-  # Server functions
-  def listen_loop(counter) do
-    IO.puts("\nWaiting for an invalid route...")
+  def clear do
+    GenericServer.cast(@name, :clear)
+  end
 
-    receive do
-      {sender, :bump_count, path} ->
-        new_counter = Map.update(counter, path, 1, &(&1 + 1))
-        send(sender, {:response, Map.get(new_counter, path)})
-        listen_loop(new_counter)
+  # Server callbacks
+  def handle_call({:bump_count, path}, counter) do
+    new_counter = Map.update(counter, path, 1, &(&1 + 1))
 
-      {sender, :get_counts} ->
-        send(sender, {:response, counter})
-        listen_loop(counter)
+    {new_counter, new_counter}
+  end
 
-      {sender, :get_count, path} ->
-        send(sender, {:response, Map.get(counter, path)})
-        listen_loop(counter)
+  def handle_call(:get_counts, counter) do
+    {counter, counter}
+  end
 
-      unexpected ->
-        IO.puts("Unexpected messages: #{inspect(unexpected)}")
-        listen_loop(counter)
-    end
+  def handle_call({:get_count, path}, counter) do
+    {Map.get(counter, path), counter}
+  end
+
+  def handle_cast(:clear, _cache) do
+    %{}
   end
 end
