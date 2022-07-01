@@ -12,4 +12,4 @@ defmodule Recurse do
   def triple([]), do: []
 end
 
-IO.inspect(Recurse.my_map([1, 2, 3, 4, 5], &(&1 * 5)))
+# IO.inspect(Recurse.my_map([1, 2, 3, 4, 5], &(&1 * 5)))

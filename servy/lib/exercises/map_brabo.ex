@@ -8,4 +8,4 @@ defmodule MapBrabo do
   end
 end
 
-MapBrabo.main()
+# MapBrabo.main()

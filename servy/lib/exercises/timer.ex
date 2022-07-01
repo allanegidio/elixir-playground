@@ -7,8 +7,8 @@ defmodule Timer do
   end
 end
 
-Timer.remind("Stand Up", 5)
-Timer.remind("Sit Down", 10)
-Timer.remind("Fight, Fight, Fight", 15)
+# Timer.remind("Stand Up", 5)
+# Timer.remind("Sit Down", 10)
+# Timer.remind("Fight, Fight, Fight", 15)
 
 # :timer.sleep(:infinity)

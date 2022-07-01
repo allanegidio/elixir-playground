@@ -12,11 +12,11 @@ defmodule HandCards do
   end
 end
 
-ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
-suits = ["♣", "♦", "♥", "♠"]
+# ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+# suits = ["♣", "♦", "♥", "♠"]
 
-cards = HandCards.get_possible_pairs(ranks, suits)
-deck = HandCards.get_deck(cards)
-hand = HandCards.get_hand(deck)
+# cards = HandCards.get_possible_pairs(ranks, suits)
+# deck = HandCards.get_deck(cards)
+# hand = HandCards.get_hand(deck)
 
-IO.inspect(hand)
+# IO.inspect(hand)
