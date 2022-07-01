@@ -1,8 +1,6 @@
 defmodule Servy.GenericServer do
-  alias Servy.PledgeServer
-
-  def start(initial_state \\ [], name) do
-    pid = spawn(__MODULE__, :listen_loop, [initial_state])
+  def start(callback_module, initial_state \\ [], name) do
+    pid = spawn(callback_module, :listen_loop, [initial_state, callback_module])
     Process.register(pid, name)
     pid
   end
@@ -19,18 +17,18 @@ defmodule Servy.GenericServer do
     send(pid, {:cast, message})
   end
 
-  def listen_loop(cache) do
+  def listen_loop(cache, callback_module) do
     IO.puts("\nWaiting for a message...")
 
     receive do
       {:call, sender, message} when is_pid(sender) ->
-        {response, new_cache} = PledgeServer.handle_call(message, cache)
+        {response, new_cache} = callback_module.handle_call(message, cache)
         send(sender, {:response, response})
-        listen_loop(new_cache)
+        listen_loop(new_cache, callback_module)
 
       {:cast, message} ->
-        new_cache = PledgeServer.handle_cast(message, cache)
-        listen_loop(new_cache)
+        new_cache = callback_module.handle_cast(message, cache)
+        listen_loop(new_cache, callback_module)
 
       unexpected ->
         IO.puts("Unexpected messages: #{inspect(unexpected)}")
@@ -45,7 +43,7 @@ defmodule Servy.PledgeServer do
 
   # Client functions
   def start() do
-    GenericServer.start([], @name)
+    GenericServer.start(__MODULE__, [], @name)
   end
 
   def create_pledge(name, amount) do
