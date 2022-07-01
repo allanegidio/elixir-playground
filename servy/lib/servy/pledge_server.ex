@@ -1,48 +1,70 @@
-defmodule Servy.PledgeServer do
-  @name :pledge_server
+defmodule Servy.GenericServer do
+  alias Servy.PledgeServer
 
-  # Client functions
-  def start(initial_state \\ []) do
-    IO.puts("Starting the pledge server...")
+  def start(initial_state \\ [], name) do
     pid = spawn(__MODULE__, :listen_loop, [initial_state])
-    Process.register(pid, @name)
+    Process.register(pid, name)
     pid
   end
 
-  def create_pledge(name, amount) do
-    call(@name, {:create_pledge, name, amount})
-  end
-
-  def recent_pledges() do
-    call(@name, :recent_pledges)
-  end
-
-  def total_pledged() do
-    call(@name, :total_pledged)
-  end
-
   def call(pid, message) do
-    send(pid, {self(), message})
+    send(pid, {:call, self(), message})
 
     receive do
       {:response, response} -> response
     end
   end
 
-  # Server functions
+  def cast(pid, message) do
+    send(pid, {:cast, message})
+  end
+
   def listen_loop(cache) do
     IO.puts("\nWaiting for a message...")
 
     receive do
-      {sender, message} when is_pid(sender) ->
-        {response, new_cache} = handle_call(message, cache)
+      {:call, sender, message} when is_pid(sender) ->
+        {response, new_cache} = PledgeServer.handle_call(message, cache)
         send(sender, {:response, response})
+        listen_loop(new_cache)
+
+      {:cast, message} ->
+        new_cache = PledgeServer.handle_cast(message, cache)
         listen_loop(new_cache)
 
       unexpected ->
         IO.puts("Unexpected messages: #{inspect(unexpected)}")
     end
   end
+end
+
+defmodule Servy.PledgeServer do
+  @name :pledge_server
+
+  alias Servy.GenericServer
+
+  # Client functions
+  def start() do
+    GenericServer.start([], @name)
+  end
+
+  def create_pledge(name, amount) do
+    GenericServer.call(@name, {:create_pledge, name, amount})
+  end
+
+  def recent_pledges() do
+    GenericServer.call(@name, :recent_pledges)
+  end
+
+  def total_pledged() do
+    GenericServer.call(@name, :total_pledged)
+  end
+
+  def clear do
+    GenericServer.cast(@name, :clear)
+  end
+
+  # Server functions
 
   def handle_call(:recent_pledges, cache) do
     {cache, cache}
@@ -64,6 +86,10 @@ defmodule Servy.PledgeServer do
       |> Enum.sum()
 
     {total, cache}
+  end
+
+  def handle_cast(:clear, _cache) do
+    []
   end
 
   defp send_pledge_to_service(_name, _amount) do
