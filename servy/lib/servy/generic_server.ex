@@ -31,8 +31,8 @@ defmodule Servy.GenericServer do
         listen_loop(new_cache, callback_module)
 
       unexpected ->
-        IO.puts("Unexpected messages: #{inspect(unexpected)}")
-        listen_loop(cache, callback_module)
+        new_cache = callback_module.handle_info(unexpected, cache)
+        listen_loop(new_cache, callback_module)
     end
   end
 end
