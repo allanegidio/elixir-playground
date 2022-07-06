@@ -346,6 +346,7 @@ defmodule HandlerTest do
            """
   end
 
+  @tag :skip
   test "GET /snapshots" do
     request = """
     GET /snapshots HTTP/1.1\r

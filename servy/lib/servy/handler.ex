@@ -8,7 +8,6 @@ defmodule Servy.Handler do
   alias Servy.Api.BearController, as: ApiBearController
   alias Servy.Conv
   alias Servy.Fetcher
-  alias Servy.VideoCam
   alias Servy.SensorServer
   alias Servy.Tracker
   alias Servy.View
