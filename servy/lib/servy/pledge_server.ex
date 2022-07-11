@@ -5,11 +5,16 @@ end
 defmodule Servy.PledgeServer do
   @name :pledge_server
 
-  use GenServer
+  use GenServer, restart: :temporary
 
   # Client functions
   def start() do
     GenServer.start(__MODULE__, %{cache_size: 3, pledges: []}, name: @name)
+  end
+
+  def start_link(_args) do
+    IO.puts("Starting the pledge server...")
+    GenServer.start_link(__MODULE__, %{cache_size: 3, pledges: []}, name: @name)
   end
 
   def create_pledge(name, amount) do
