@@ -5,7 +5,11 @@ end
 defmodule Servy.PledgeServer do
   @name :pledge_server
 
-  use GenServer, restart: :temporary
+  use GenServer
+
+  # def child_spec(_arg) do
+  #   %{id: Servy.PledgeServer, start: {Servy.PledgeServer, :start_link, [[]]}}
+  # end
 
   # Client functions
   def start() do
