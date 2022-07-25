@@ -46,7 +46,7 @@ defmodule LiveViewStudioWeb.LightLive do
   end
 
   def handle_event("down", _value, socket) do
-    socket = update(socket, :brightness, &(&1 - 10))
+    socket = update(socket, :brightness, &max(&1 - 10, 0))
 
     {:noreply, socket}
   end
@@ -58,7 +58,7 @@ defmodule LiveViewStudioWeb.LightLive do
   end
 
   def handle_event("up", _value, socket) do
-    socket = update(socket, :brightness, &(&1 + 10))
+    socket = update(socket, :brightness, &min(&1 + 10, 100))
 
     {:noreply, socket}
   end
