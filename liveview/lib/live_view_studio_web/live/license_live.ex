@@ -23,7 +23,7 @@ defmodule LiveViewStudioWeb.LicenseLive do
             <img src="images/license.svg">
             <span>
               Your license is currently for
-              <strong><%= @seats %></strong> seats.
+              <strong><%= @seats %></strong> <%= ngettext("seat", "seats", @seats) %>.
             </span>
           </div>
           <form phx-change="update">
