@@ -14,13 +14,13 @@ defmodule LiveViewStudioWeb.LicenseLive do
     value = Licenses.calculate(seats)
     expiration_time = Timex.shift(Timex.now(), hours: 1)
 
-
-    socket = assign(socket,
-      seats: seats,
-      amount: value,
-      expiration_time: expiration_time,
-      time_remaining: time_remaining(expiration_time)
-    )
+    socket =
+      assign(socket,
+        seats: seats,
+        amount: value,
+        expiration_time: expiration_time,
+        time_remaining: time_remaining(expiration_time)
+      )
 
     {:ok, socket}
   end
@@ -40,7 +40,7 @@ defmodule LiveViewStudioWeb.LicenseLive do
           </div>
           <form phx-change="update">
             <input type="range" min="1" max="10"
-                  name="seats" value={@seats} />
+                  name="seats" value={@seats} phx-debounce="250"/>
               <p class="m-4 font-semibold text-indigo-800">
                 <%= if @time_remaining > 0 do %>
                   <%= format_time(@time_remaining) %> left to save 20%
@@ -75,7 +75,7 @@ defmodule LiveViewStudioWeb.LicenseLive do
   end
 
   defp time_remaining(expiration_time) do
-    DateTime.diff(expiration_time, Timex.now)
+    DateTime.diff(expiration_time, Timex.now())
   end
 
   defp format_time(time) do
