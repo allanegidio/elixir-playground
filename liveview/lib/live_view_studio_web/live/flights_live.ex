@@ -9,14 +9,14 @@ defmodule LiveViewStudioWeb.FlightsLive do
       socket
       |> assign(
         flight: "",
-        flights: [],
+        flights: Flights.list_flights(),
         number: "",
         airport: "",
         matches: [],
         loading: false
       )
 
-    {:ok, socket}
+    {:ok, socket, temporary_assigns: [flights: []]}
   end
 
   def render(assigns) do
