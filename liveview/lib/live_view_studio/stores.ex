@@ -1,81 +1,131 @@
 defmodule LiveViewStudio.Stores do
-  def search_by_zip(zip) do
-    :timer.sleep(2000)
+  @moduledoc """
+  The Stores context.
+  """
 
-    list_stores()
-    |> Enum.filter(&(&1.zip == zip))
-  end
+  import Ecto.Query, warn: false
+  alias LiveViewStudio.Repo
 
-  def search_by_city(city) do
-    list_stores()
-    |> Enum.filter(&(&1.city == city))
-  end
+  alias LiveViewStudio.Stores.Store
 
+  @doc """
+  Returns the list of stores.
+
+  ## Examples
+
+      iex> list_stores()
+      [%Store{}, ...]
+
+  """
   def list_stores do
-    [
-      %{
-        name: "Downtown Helena",
-        street: "312 Montana Avenue",
-        phone_number: "406-555-0100",
-        city: "Helena, MT",
-        zip: "06250",
-        open: true,
-        hours: "8am - 10pm M-F"
-      },
-      %{
-        name: "East Helena",
-        street: "227 Miner's Lane",
-        phone_number: "406-555-0120",
-        city: "Helena, MT",
-        zip: "06250",
-        open: false,
-        hours: "8am - 10pm M-F"
-      },
-      %{
-        name: "Westside Helena",
-        street: "734 Lake Loop",
-        phone_number: "406-555-0130",
-        city: "Helena, MT",
-        zip: "06250",
-        open: true,
-        hours: "8am - 10pm M-F"
-      },
-      %{
-        name: "Downtown Denver",
-        street: "426 Aspen Loop",
-        phone_number: "303-555-0140",
-        city: "Denver, CO",
-        zip: "06150",
-        open: true,
-        hours: "8am - 10pm M-F"
-      },
-      %{
-        name: "Midtown Denver",
-        street: "7 Broncos Parkway",
-        phone_number: "720-555-0150",
-        city: "Denver, CO",
-        zip: "06150",
-        open: false,
-        hours: "8am - 10pm M-F"
-      },
-      %{
-        name: "Denver Stapleton",
-        street: "965 Summit Peak",
-        phone_number: "303-555-0160",
-        city: "Denver, CO",
-        zip: "06150",
-        open: true,
-        hours: "8am - 10pm M-F"
-      },
-      %{
-        name: "Denver West",
-        street: "501 Mountain Lane",
-        phone_number: "720-555-0170",
-        city: "Denver, CO",
-        zip: "06150",
-        open: true,
-        hours: "8am - 10pm M-F"
-      }
-    ]
+    Repo.all(Store)
+  end
+
+  @doc """
+  Gets a single store.
+
+  Raises `Ecto.NoResultsError` if the Store does not exist.
+
+  ## Examples
+
+      iex> get_store!(123)
+      %Store{}
+
+      iex> get_store!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_store!(id), do: Repo.get!(Store, id)
+
+  @doc """
+  Creates a store.
+
+  ## Examples
+
+      iex> create_store(%{field: value})
+      {:ok, %Store{}}
+
+      iex> create_store(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_store(attrs \\ %{}) do
+    %Store{}
+    |> Store.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a store.
+
+  ## Examples
+
+      iex> update_store(store, %{field: new_value})
+      {:ok, %Store{}}
+
+      iex> update_store(store, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_store(%Store{} = store, attrs) do
+    store
+    |> Store.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a store.
+
+  ## Examples
+
+      iex> delete_store(store)
+      {:ok, %Store{}}
+
+      iex> delete_store(store)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_store(%Store{} = store) do
+    Repo.delete(store)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking store changes.
+
+  ## Examples
+
+      iex> change_store(store)
+      %Ecto.Changeset{data: %Store{}}
+
+  """
+  def change_store(%Store{} = store, attrs \\ %{}) do
+    Store.changeset(store, attrs)
+  end
+
+  @doc """
+    Searchs a Store by Zip code
+
+  ## Examples
+
+      iex> search_by_zip(zip)
+      [%Store{}, ...]
+  """
+  def search_by_zip(zip) do
+    from(s in Store, where: s.zip == ^zip)
+    |> Repo.all()
+  end
+
+  @doc """
+  Searchs a Store by city name
+
+  ## Examples
+
+      iex> search_by_city(city)
+      [%Store{}, ...]
+
+  """
+  def search_by_city(city) do
+    from(s in Store, where: s.city == ^city)
+    |> Repo.all()
   end
 end
