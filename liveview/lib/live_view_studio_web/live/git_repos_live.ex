@@ -4,9 +4,7 @@ defmodule LiveViewStudioWeb.GitReposLive do
   alias LiveViewStudio.GitRepos
 
   def mount(_params, _session, socket) do
-    socket =
-      socket
-      |> assign(repos: GitRepos.list_git_repos())
+    socket = assign_defaults(socket)
 
     {:ok, socket}
   end
@@ -15,6 +13,17 @@ defmodule LiveViewStudioWeb.GitReposLive do
     ~H"""
     <h1>Trending Git Repos</h1>
     <div id="repos">
+      <form phx-change="filter">
+        <div class="filters">
+          <select name="language">
+            <%= options_for_select(language_options(), @language) %>
+          </select>
+          <select name="license">
+            <%= options_for_select(license_options(), @license) %>
+          </select>
+          <a href="#" phx-click="clear">Clear All</a>
+        </div>
+      </form>
       <div class="repos">
         <ul>
           <%= for repo <- @repos do %>
@@ -57,5 +66,46 @@ defmodule LiveViewStudioWeb.GitReposLive do
       </div>
     </div>
     """
+  end
+
+  def handle_event("filter", %{"language" => language, "license" => license}, socket) do
+    result = GitRepos.list_git_repos(language: language, license: license)
+
+    socket =
+      socket
+      |> assign(
+        language: language,
+        license: license,
+        repos: result
+      )
+
+    {:noreply, socket}
+  end
+
+  defp language_options do
+    [
+      "All Languages": "",
+      "Elixir": "elixir",
+      Ruby: "ruby",
+      Javascript: "javascript"
+    ]
+  end
+
+  defp license_options do
+    [
+      "All Licenses": "",
+      MIT: "mit",
+      Apache: "apache",
+      BDSL: "bdsl"
+    ]
+  end
+
+  def handle_event("clear", _params, socket) do
+    socket = assign_defaults(socket)
+    {:noreply, socket}
+  end
+
+  defp assign_defaults(socket) do
+    assign(socket, repos: GitRepos.list_git_repos(), language: "", license: "")
   end
 end

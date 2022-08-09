@@ -119,15 +119,14 @@ defmodule LiveViewStudio.GitRepos do
         query
 
       {:language, language}, query ->
-        from q in query,
-          where: q.language == ^language
+        from q in query, where: q.language == ^language
 
       {:license, ""}, query ->
         query
 
       {:license, license}, query ->
-        from q in query,
-          where: q.license == ^license
+        from q in query, where: q.license == ^license
     end)
+    |> Repo.all()
   end
 end
