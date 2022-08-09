@@ -37,7 +37,7 @@ defmodule LiveViewStudioWeb.GitReposLive do
               </div>
               <div class="second-line">
                 <div class="group">
-                  <span class="language #{repo.language}">
+                  <span class={"language #{repo.language}"}>
                     <%= repo.language %>
                   </span>
                   <span class="license">
