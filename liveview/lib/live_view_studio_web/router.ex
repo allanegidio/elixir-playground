@@ -18,14 +18,28 @@ defmodule LiveViewStudioWeb.Router do
     pipe_through :browser
 
     live "/", PageLive
+
+    # Aprendendo como disparar eventos e controlar o estado.
     live "/light", LightLive
+
+    # Aprendendo sobre Dynamic Form, eu atualizo o formulario e calculo o valor dos assentos com base no form.
     live "/license", LicenseLive
+
+    # Aprendendo manipular eventos com mensagens internas, dessa forma o estado e atualizado com um worker.
     live "/sales-dashboard", SalesDashboardLive
+
+    # Aprendendo como fazer pesquisas em Live View
     live "/search", SearchLive
+
+    # Aprendendo como fazer autocomplete
     live "/flights", FlightsLive
     live "/autocomplete", AutocompleteLive
+
+    # Aprendendo como fazer filtros.
     live "/filter", FilterLive
     live "/git-repos", GitReposLive
+
+    # Aprendendo como fazer um Formulario com multiplas etapas
     live "/multi-step-form", OrganizationLive
   end
 
