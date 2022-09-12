@@ -1,4 +1,7 @@
 /* This file is for your main application css. */
+.phx-no-feedback.phx-invalid-feedback, .phx-no-feedback .phx-invalid-feedback {
+  display: none;
+}
 
 @import "../node_modules/nprogress/nprogress.css";
 

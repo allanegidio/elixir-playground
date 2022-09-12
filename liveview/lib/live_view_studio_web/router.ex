@@ -26,6 +26,7 @@ defmodule LiveViewStudioWeb.Router do
     live "/autocomplete", AutocompleteLive
     live "/filter", FilterLive
     live "/git-repos", GitReposLive
+    live "/multi-step-form", OrganizationLive
   end
 
   # Other scopes may use custom stacks.
