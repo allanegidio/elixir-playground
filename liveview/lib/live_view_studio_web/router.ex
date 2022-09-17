@@ -41,6 +41,9 @@ defmodule LiveViewStudioWeb.Router do
 
     # Aprendendo como fazer um Formulario com multiplas etapas
     live "/multi-step-form", OrganizationLive
+
+    # Aprendendo sobre live navigation, live_patch vs live_redirect
+    live "/servers", ServersLive
   end
 
   # Other scopes may use custom stacks.
