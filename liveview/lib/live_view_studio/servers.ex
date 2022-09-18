@@ -38,6 +38,16 @@ defmodule LiveViewStudio.Servers do
   def get_server!(id), do: Repo.get!(Server, id)
 
   @doc """
+  Gets a single server by name.
+
+  ## Examples
+
+      iex> get_server_by_name("cryptic-owl")
+      %Server{}
+  """
+  def get_server_by_name(name), do: Repo.get_by(Server, name: name)
+
+  @doc """
   Creates a server.
 
   ## Examples
