@@ -29,6 +29,41 @@
     </ul>
   </article>
   <article class="column">
+    <h2>Live Routes Examples</h2>
+    <ul>
+      <li>
+        <%= live_redirect "Light", to: Routes.live_path(@socket, LiveViewStudioWeb.LightLive)  %>
+      </li>
+      <li>
+        <%= live_redirect "License", to: Routes.live_path(@socket, LiveViewStudioWeb.LicenseLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Sales Dashboard", to: Routes.live_path(@socket, LiveViewStudioWeb.SalesDashboardLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Search", to: Routes.live_path(@socket, LiveViewStudioWeb.SearchLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Flights", to: Routes.live_path(@socket, LiveViewStudioWeb.FlightsLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Autocomplete", to: Routes.live_path(@socket, LiveViewStudioWeb.AutocompleteLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Filter", to: Routes.live_path(@socket, LiveViewStudioWeb.FilterLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Git Repos", to: Routes.live_path(@socket, LiveViewStudioWeb.GitReposLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Multi Step Form", to: Routes.live_path(@socket, LiveViewStudioWeb.OrganizationLive) %>
+      </li>
+      <li>
+        <%= live_redirect "Servers", to: Routes.live_path(@socket, LiveViewStudioWeb.ServersLive) %>
+      </li>
+    </ul>
+  </article>
+  <article class="column">
     <h2>Help</h2>
     <ul>
       <li>
