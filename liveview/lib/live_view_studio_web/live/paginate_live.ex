@@ -10,7 +10,8 @@ defmodule LiveViewStudioWeb.PaginateLive do
     socket =
       assign(socket,
         options: paginate_options,
-        donations: donations
+        donations: donations,
+        total_donations: Donations.count_donations()
       )
 
     {:ok, socket, temporary_assigns: [donations: []]}

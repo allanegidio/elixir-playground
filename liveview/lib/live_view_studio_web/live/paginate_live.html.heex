@@ -52,20 +52,24 @@
         <% end %>
         
         <%= for i <- (@options.page - 2)..(@options.page + 2), i > 0 do %>
-          <%= pagination_link(@socket,
-                              i,
-                              i,
-                              @options.per_page,
-                              (if i == @options.page, do: "active")
-                              ) %>
+          <%= if i <= ceil(@total_donations / @options.per_page) do %>
+            <%= pagination_link(@socket,
+                                i,
+                                i,
+                                @options.per_page,
+                                (if i == @options.page, do: "active")
+                                ) %>
+            <%= end %>
         <% end %>
 
-        <%= pagination_link(@socket,
+        <%= if (@options.page * @options.per_page) < @total_donations do %>
+          <%= pagination_link(@socket,
                             "Next",
                             @options.page + 1,
                             @options.per_page,
                             "next"
                             ) %>
+        <% end %>
       </div>
     </div>
   </div>

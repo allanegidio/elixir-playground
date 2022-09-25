@@ -40,7 +40,6 @@ defmodule LiveViewStudio.Donations do
 
   """
   def list_donations(criteria) when is_list(criteria) do
-    IO.inspect(criteria)
     query = from(d in Donation)
 
     Enum.reduce(criteria, query, fn
@@ -134,5 +133,18 @@ defmodule LiveViewStudio.Donations do
   """
   def change_donation(%Donation{} = donation, attrs \\ %{}) do
     Donation.changeset(donation, attrs)
+  end
+
+  @doc """
+  Returns count of donations on database
+
+  ## Examples
+
+      iex> count_donations
+      100
+
+  """
+  def count_donations do
+    Repo.aggregate(Donation, :count, :id)
   end
 end
