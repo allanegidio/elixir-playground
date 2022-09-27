@@ -48,8 +48,9 @@ defmodule LiveViewStudioWeb.Router do
     # Aprendendo sobre live navigation, live_patch vs live_redirect
     live "/servers", ServersLive
 
-    # Aprendendo sobre pagination em live view
-    live "/pagination", PaginateLive
+    # Aprendendo sobre paginate em live view
+    live "/paginate", PaginateLive
+    live "/vehicles", VehiclesLive
   end
 
   # Other scopes may use custom stacks.
