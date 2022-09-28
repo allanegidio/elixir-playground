@@ -51,6 +51,9 @@ defmodule LiveViewStudioWeb.Router do
     # Aprendendo sobre paginate em live view
     live "/paginate", PaginateLive
     live "/vehicles", VehiclesLive
+
+    # Aprendendo sobre sort em live view
+    live "/sort", SortLive
   end
 
   # Other scopes may use custom stacks.
