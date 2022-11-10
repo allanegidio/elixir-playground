@@ -16,12 +16,16 @@ defmodule PowStudyWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/" do
+    pipe_through :browser
+
+    pow_routes()
+  end
+
   scope "/", PowStudyWeb do
     pipe_through :browser
 
     get "/", PageController, :index
-
-    pow_routes()
   end
 
   # Other scopes may use custom stacks.

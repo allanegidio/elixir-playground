@@ -49,7 +49,8 @@ config :phoenix, :json_library, Jason
 
 config :pow_study, :pow,
   user: PowStudy.Users.User,
-  repo: PowStudy.Repo
+  repo: PowStudy.Repo,
+  web_module: PowStudyWeb
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
