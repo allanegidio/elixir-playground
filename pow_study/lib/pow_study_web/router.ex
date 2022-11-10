@@ -1,6 +1,8 @@
 defmodule PowStudyWeb.Router do
   use PowStudyWeb, :router
 
+  use Pow.Phoenix.Router
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -18,6 +20,8 @@ defmodule PowStudyWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    pow_routes()
   end
 
   # Other scopes may use custom stacks.
